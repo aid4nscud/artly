@@ -1,0 +1,35 @@
+.card-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 1em;
+    margin-bottom: 2em;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    border: 3px #777 dashed;
+    border-radius: 1em;
+    padding: 1em;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    height: min-content;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.card p {
+    margin-top: 0.5em;
+    font-weight: 600;
+}

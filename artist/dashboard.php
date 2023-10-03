@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Artist Dashboard</title>
+    <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/artist-dashboard.css">
 </head>
 
