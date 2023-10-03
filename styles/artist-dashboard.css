@@ -1,0 +1,122 @@
+body,
+h1,
+ul,
+li,
+p {
+    margin: 0;
+    padding: 0;
+}
+
+
+.main-header {
+    background-color: #333;
+    color: white;
+    padding: 1em 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+.main-footer {
+    background-color: #333;
+    color: white;
+    padding: 1em 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+
+
+.logo {
+    font-size: 2em;
+    font-weight: bold;
+    width: 200px;
+    padding: 0 1em;
+}
+
+.main-nav {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-end;
+
+}
+
+
+.nav-list {
+    list-style: none;
+}
+
+.nav-item {
+    display: inline;
+    margin-right: 20px;
+}
+
+.nav-item a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+.main-content {
+    padding: 2em;
+}
+
+.main-title {
+    font-size: 2.5em;
+    margin-bottom: 1em;
+}
+
+.portfolio-section {
+    margin-bottom: 2em;
+}
+
+.portfolio-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 1em;
+    list-style: none;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.portfolio-list li {
+    flex: 0 0 auto;
+}
+
+.portfolio-list img {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+.auction-history table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2em;
+}
+
+.auction-history th,
+.auction-history td {
+    border: 1px solid #ccc;
+    padding: 0.5em;
+    text-align: left;
+}
+
+.table-img {
+    max-width: 50px;
+    max-height: 50px;
+}
+
+
+#lineGraph {
+    width: 100%;
+    height: 300px;
+    background-color: #f1f1f1;
+    text-align: center;
+    line-height: 300px;
+}
