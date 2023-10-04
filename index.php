@@ -20,8 +20,19 @@
     </header>
 
     <main class="main-content">
-        <h1 class="main-title">Welcome to Artly</h1>
-        <p class="intro-text">This is a platform for artists and art collectors to sell and buy art</p>
+
+ 
+        <section class="hero">
+            <h1>Welcome to Artly</h1>
+            <p>Your one-stop platform for buying and selling art.</p>
+        </section>
+
+        
+        <section class="description">
+            <h2>About Artly</h2>
+            <p>Artly is a unique platform designed for artists and art collectors. Here, you can showcase your art, participate in auctions, and even build your own collection from other talented artists. Join us and become part of this vibrant community.</p>
+        </section>
+
     </main>
 
     <footer class="main-footer">

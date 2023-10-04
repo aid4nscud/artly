@@ -9,7 +9,7 @@
 <body>
 
     <header class="main-header">
-        <div class="logo">ARTLY</div>
+        <div class="logo"><a href="../index.php">ARTLY</a></div>
         <nav class="main-nav">
             <ul class="nav-list">
                 <li class="nav-item"><a href="./dashboard.php">Dashboard</a></li>

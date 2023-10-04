@@ -59,13 +59,9 @@ p {
     font-weight: bold;
 }
 
-.main-content {
-    padding: 2em;
-}
 
 .main-title {
-    font-size: 2.5em;
-    margin-bottom: 1em;
+    padding: 1em;
 }
 
 .portfolio-section {

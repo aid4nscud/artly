@@ -11,7 +11,7 @@
 <body>
 
     <header class="main-header">
-        <div class="logo">ARTLY</div>
+        <div class="logo"><a href="../index.php">ARTLY</a></div>
         <nav class="main-nav">
             <ul class="nav-list">
                 <li class="nav-item"><a href="./dashboard.php">Dashboard</a></li>
@@ -23,8 +23,6 @@
 
     <main class="main-content">
         <h1 class="main-title">Add New Art</h1>
-
-
         <section class="new-art-form">
             <form action="/submit-art" method="POST" enctype="multipart/form-data">
                 <label for="name">Art Piece Name:</label>
