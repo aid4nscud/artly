@@ -74,21 +74,28 @@ body {
     background: url('../images/hero.jpeg') no-repeat center center;
     background-size: cover;
     background-position: center;
+    height: 40vh;
     color: white;
     text-align: center;
     padding: 100px 0;
     border-bottom-left-radius: 2em;
     border-bottom-right-radius: 2em;
     margin: -1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .hero h1 {
     font-size: 3em;
     margin-bottom: 20px;
+    text-shadow: 0 0 1em #000000;
 }
 
 .hero p {
     font-size: 1.4em;
+    text-shadow: 0 0 1em #000000;
 }
 
 /* Brief Description */
