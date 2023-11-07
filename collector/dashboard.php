@@ -1,11 +1,29 @@
+<?php
+session_start();
+require_once '../Dao.php';
+
+// Check if the user is logged in, if not then redirect to login page
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'collector') {
+    header('Location: ../../auth/login.php');
+    exit;
+}
+
+$dao = new Dao();
+$collectorArt = $dao->getCollectorArt($_SESSION['user_id']);
+$artists = $dao->getCollectorArtists($_SESSION['user_id']);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Collector Dashboard</title>
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/collector-dashboard.css">
 </head>
+
 <body>
 
     <header class="main-header">
@@ -15,6 +33,7 @@
                 <li class="nav-item"><a href="./dashboard.php">Dashboard</a></li>
                 <li class="nav-item"><a href="./browse-art.php">Browse Art</a></li>
                 <li class="nav-item"><a href="./my-bids.php">My Bids</a></li>
+                <li class="nav-item"><a href="../../auth/logout_handler.php">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -24,36 +43,35 @@
 
         <h2>Art Pieces</h2>
         <section class="card-list">
-            
-            <div class="card">
-                <img src="../images/sample1.webp" alt="Art1">
-                <p>Art Piece 1</p>
-            </div>
-       
+            <?php foreach ($collectorArt as $art): ?>
+                <div class="card">
+                    <img src="<?php echo htmlspecialchars($art['image_url']); ?>"
+                        alt="<?php echo htmlspecialchars($art['name']); ?>" class="art-image">
+                    <p>
+                        <?php echo htmlspecialchars($art['name']); ?>
+                    </p>
+                </div>
+            <?php endforeach; ?>
+            <?php if (empty($collectorArt)): ?>
+                <p>You don't have any art yet!</p>
+            <?php endif; ?>
         </section>
 
-        <h2>Wishlist</h2>
-        <section class="card-list">
-           
-            <div class="card">
-                <img src="../images/sample2.jpeg" alt="Art2">
-                <p>Art Piece 2</p>
-            </div>
-       
-        </section>
+
 
         <h2>My Artists</h2>
         <section class="card-list">
-           
-            <div class="card">
-                <img src="../images/artist1.webp" alt="Artist1">
-                <p>Artist 1</p>
-            </div>
-            <div class="card">
-                <img src="../images/artist2.webp" alt="Artist2">
-                <p>Artist 2</p>
-            </div>
-  
+            <?php foreach ($artists as $artist): ?>
+                <div class="card">
+                    <img src="<?php echo $artist['image_url']; ?>" alt="<?php echo htmlspecialchars($artist['name']); ?>">
+                    <p>
+                        <?php echo htmlspecialchars($artist['name']); ?>
+                    </p>
+                </div>
+            <?php endforeach; ?>
+            <?php if (empty($artists)): ?>
+                <p>You haven't bought from any artists yet!</p>
+            <?php endif; ?>
         </section>
 
     </main>
@@ -63,4 +81,5 @@
     </footer>
 
 </body>
+
 </html>

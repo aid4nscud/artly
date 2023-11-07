@@ -1,11 +1,27 @@
+<?php
+session_start();
+require_once '../Dao.php';
+
+// Check if the user is logged in, if not then redirect to login page
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'collector') {
+    header('Location: ../../auth/login.php');
+    exit;
+}
+
+$dao = new Dao();
+$allArt = $dao->getAllArt();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Browse Art</title>
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/browse-art.css">
 </head>
+
 <body>
 
     <header class="main-header">
@@ -15,6 +31,7 @@
                 <li class="nav-item"><a href="./dashboard.php">Dashboard</a></li>
                 <li class="nav-item"><a href="./browse-art.php">Browse Art</a></li>
                 <li class="nav-item"><a href="./my-bids.php">My Bids</a></li>
+                <li class="nav-item"><a href="../../auth/logout_handler.php">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -23,115 +40,27 @@
         <h1 class="main-title">Browse Art</h1>
 
         <section class="art-grid">
-            <div class="art-card">
-                <img src="../images/artist1.webp" alt="Artist1" class="artist-profile">
-                <img src="../images/sample1.webp" alt="Art1" class="art-image">
-                <div class="art-details">
-                    <h3>Art Piece 1</h3>
-                    <p>Abstract art piece made with oil paints.</p>
-                    <button class="buy-button">Buy/Bid</button>
-                </div>
-            </div>
-            <div class="art-card">
-                <img src="../images/artist2.webp" alt="Artist1" class="artist-profile">
-                <img src="../images/sample2.jpeg" alt="Art1" class="art-image">
-                <div class="art-details">
-                    <h3>Art Piece 2</h3>
-                    <p>Abstract art piece made with oil paints.</p>
-                    <button class="buy-button">Buy/Bid</button>
-                </div>
-            </div>
-            <div class="art-card">
-                <img src="../images/artist3.jpeg" alt="Artist1" class="artist-profile">
-                <img src="../images/sample3.jpeg" alt="Art1" class="art-image">
-                <div class="art-details">
-                    <h3>Art Piece 3</h3>
-                    <p>Abstract art piece made with oil paints.</p>
-                    <button class="buy-button">Buy/Bid</button>
-                </div>
-            </div>
-            <div class="art-card">
-                <img src="../images/artist4.jpeg" alt="Artist1" class="artist-profile">
-                <img src="../images/sample4.webp" alt="Art1" class="art-image">
-                <div class="art-details">
-                    <h3>Art Piece 4</h3>
-                    <p>Abstract art piece made with oil paints.</p>
-                    <button class="buy-button">Buy/Bid</button>
-                </div>
-            </div>
-            <div class="art-card">
-                <img src="../images/artist1.webp" alt="Artist1" class="artist-profile">
-                <img src="../images/sample1.webp" alt="Art1" class="art-image">
-                <div class="art-details">
-                    <h3>Art Piece 1</h3>
-                    <p>Abstract art piece made with oil paints.</p>
-                    <button class="buy-button">Buy/Bid</button>
-                </div>
-            </div>
-            <div class="art-card">
-                <img src="../images/artist4.jpeg" alt="Artist1" class="artist-profile">
-                <img src="../images/sample5.webp" alt="Art1" class="art-image">
-                <div class="art-details">
-                    <h3>Art Piece 2</h3>
-                    <p>Abstract art piece made with oil paints.</p>
-                    <button class="buy-button">Buy/Bid</button>
-                </div>
-            </div>
-            <div class="art-card">
-                <img src="../images/artist3.jpeg" alt="Artist1" class="artist-profile">
-                <img src="../images/sample3.jpeg" alt="Art1" class="art-image">
-                <div class="art-details">
-                    <h3>Art Piece 3</h3>
-                    <p>Abstract art piece made with oil paints.</p>
-                    <button class="buy-button">Buy/Bid</button>
-                </div>
-            </div>
-            <div class="art-card">
-                <img src="../images/artist4.jpeg" alt="Artist1" class="artist-profile">
-                <img src="../images/sample4.webp" alt="Art1" class="art-image">
-                <div class="art-details">
-                    <h3>Art Piece 4</h3>
-                    <p>Abstract art piece made with oil paints.</p>
-                    <button class="buy-button">Buy/Bid</button>
-                </div>
-            </div>
-            <div class="art-card">
-                <img src="../images/artist1.webp" alt="Artist1" class="artist-profile">
-                <img src="../images/sample1.webp" alt="Art1" class="art-image">
-                <div class="art-details">
-                    <h3>Art Piece 1</h3>
-                    <p>Abstract art piece made with oil paints.</p>
-                    <button class="buy-button">Buy/Bid</button>
-                </div>
-            </div>
-            <div class="art-card">
-                <img src="../images/artist4.jpeg" alt="Artist1" class="artist-profile">
-                <img src="../images/sample5.webp" alt="Art1" class="art-image">
-                <div class="art-details">
-                    <h3>Art Piece 2</h3>
-                    <p>Abstract art piece made with oil paints.</p>
-                    <button class="buy-button">Buy/Bid</button>
-                </div>
-            </div>
-            <div class="art-card">
-                <img src="../images/artist3.jpeg" alt="Artist1" class="artist-profile">
-                <img src="../images/sample3.jpeg" alt="Art1" class="art-image">
-                <div class="art-details">
-                    <h3>Art Piece 3</h3>
-                    <p>Abstract art piece made with oil paints.</p>
-                    <button class="buy-button">Buy/Bid</button>
-                </div>
-            </div>
-            <div class="art-card">
-                <img src="../images/artist4.jpeg" alt="Artist1" class="artist-profile">
-                <img src="../images/sample4.webp" alt="Art1" class="art-image">
-                <div class="art-details">
-                    <h3>Art Piece 4</h3>
-                    <p>Abstract art piece made with oil paints.</p>
-                    <button class="buy-button">Buy/Bid</button>
-                </div>
-            </div>
-      
+            <?php if ($allArt): ?>
+                <?php foreach ($allArt as $art): ?>
+                    <div class="card">
+                        <img src="<?php echo htmlspecialchars($art['image_url']); ?>"
+                            alt="<?php echo htmlspecialchars($art['name']); ?>" class="art-image">
+                        <div class="art-details">
+                            <h3>
+                                <?php echo htmlspecialchars($art['name']); ?>
+                            </h3>
+                            <p>
+                                <?php echo htmlspecialchars($art['medium']); ?>
+                            </p>
+
+                            <button class="buy-button">Buy/Bid</button>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No art pieces found.</p>
+            <?php endif; ?>
+
         </section>
 
     </main>
@@ -141,4 +70,5 @@
     </footer>
 
 </body>
+
 </html>

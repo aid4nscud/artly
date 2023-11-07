@@ -72,3 +72,19 @@
 .new-art-form input[type="submit"]:hover {
     background-color: #0056b3;
 }
+
+.error {
+    color: #D8000C;
+    background-color: #FFD2D2;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}

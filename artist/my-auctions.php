@@ -1,11 +1,27 @@
+<?php
+session_start();
+require_once("../Dao.php");
+
+// Check if the user is logged in, if not then redirect to login page
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'artist') {
+    header('Location: ../../auth/login.php');
+    exit;
+}
+
+$dao = new Dao();
+$auctions = $dao->getArtistAuctions($_SESSION['user_id']);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>My Auctions</title>
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/my-auctions.css">
 </head>
+
 <body>
 
     <header class="main-header">
@@ -15,6 +31,7 @@
                 <li class="nav-item"><a href="./dashboard.php">Dashboard</a></li>
                 <li class="nav-item"><a href="./new-art.php">New Art</a></li>
                 <li class="nav-item"><a href="./my-auctions.php">My Auctions</a></li>
+                <li class="nav-item"><a href="../../auth/logout_handler.php">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -36,21 +53,33 @@
                     </tr>
                 </thead>
                 <tbody>
-               
-                    <tr>
-                        <td>Artwork 1</td>
-                        <td>2023-10-02</td>
-                        <td>$100</td>
-                        <td>5</td>
-                        <td>$200</td>
-                        <td><img src="../images/sample4.webp" alt="Sample Art 1" class="table-img"></td>
-                    </tr>
-                   
+                    <?php foreach ($auctions['ongoing'] as $auction): ?>
+                        <tr>
+                            <td>
+                                <?php echo htmlspecialchars($auction['name']); ?>
+                            </td>
+                            <td>
+                                <?php echo htmlspecialchars($auction['end_time']); ?>
+                            </td>
+                            <td>$
+                                <?php echo htmlspecialchars(number_format($auction['start_price'], 2)); ?>
+                            </td>
+                            <td>
+                                1
+                            </td>
+                            <td>
+                                1
+                            </td>
+                            <td><img src="<?php echo htmlspecialchars($auction['image_url']); ?>"
+                                    alt="<?php echo htmlspecialchars($auction['name']); ?>" class="table-img"></td>
+                        </tr>
+                    <?php endforeach; ?>
+
                 </tbody>
             </table>
         </section>
 
-       
+
         <section class="auction-section">
             <h2>Past Auctions</h2>
             <table class="auction-table">
@@ -65,16 +94,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                  
-                    <tr>
-                        <td>Artwork 2</td>
-                        <td>2023-09-01</td>
-                        <td>$150</td>
-                        <td>8</td>
-                        <td>$300</td>
-                        <td><img src="../images/sample5.webp" alt="Sample Art 2" class="table-img"></td>
-                    </tr>
-                   
+
+                    <?php foreach ($auctions['past'] as $auction): ?>
+                        <tr>
+                            <td>
+                                <?php echo htmlspecialchars($auction['name']); ?>
+                            </td>
+                            <td>
+                                <?php echo htmlspecialchars($auction['end_time']); ?>
+                            </td>
+                            <td>$
+                                <?php echo htmlspecialchars(number_format($auction['start_price'], 2)); ?>
+                            </td>
+                            <td>2</td>
+                            <td>2</td>
+                            <td><img src="<?php echo htmlspecialchars($auction['image_url']); ?>"
+                                    alt="<?php echo htmlspecialchars($auction['name']); ?>" class="table-img"></td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </section>
@@ -86,4 +123,5 @@
     </footer>
 
 </body>
+
 </html>

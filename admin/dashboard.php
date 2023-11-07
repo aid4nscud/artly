@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+// Check if the user is logged in, if not then redirect to login page
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'collector') {
+    header('Location: ../../auth/login.php');
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,6 +28,7 @@
                 <li class="nav-item"><a href="./users.php">Users</a></li>
                 <li class="nav-item"><a href="./art.php">Art</a></li>
                 <li class="nav-item"><a href="./auctions.php">Auctions</a></li>
+                <li class="nav-item"><a href="../../auth/logout_handler.php">Logout</a></li>
             </ul>
         </nav>
     </header>

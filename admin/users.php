@@ -18,6 +18,7 @@
                 <li class="nav-item"><a href="./users.php">Users</a></li>
                 <li class="nav-item"><a href="./art.php">Art</a></li>
                 <li class="nav-item"><a href="./auctions.php">Auctions</a></li>
+                <li class="nav-item"><a href="../../auth/logout_handler.php">Logout</a></li>
             </ul>
         </nav>
     </header>
