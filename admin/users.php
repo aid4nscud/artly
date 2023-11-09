@@ -1,3 +1,19 @@
+<?php
+session_start();
+require_once '../Dao.php';
+
+// Check if the user is logged in, if not then redirect to login page
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: ../../auth/login.php');
+    exit;
+}
+
+$dao = new Dao();
+$users = $dao->getUsersWithTotalTransactionValue();
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,62 +53,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>John Doe</td>
-                        <td>01/01/2021</td>
-                        <td>Artist</td>
-                        <td>$1000</td>
-                        <td>
-                            <button class="action-button">Actions</button>
-                            <div class="action-dropdown">
-                                <a href="#">View</a>
-                                <a href="#">Edit</a>
-                                <a href="#">Delete</a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Jane Smith</td>
-                        <td>02/15/2021</td>
-                        <td>Collector</td>
-                        <td>$500</td>
-                        <td>
-                            <button class="action-button">Actions</button>
-                            <div class="action-dropdown">
-                                <a href="#">View</a>
-                                <a href="#">Edit</a>
-                                <a href="#">Delete</a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Emily Brown</td>
-                        <td>03/20/2022</td>
-                        <td>Admin</td>
-                        <td>$2000</td>
-                        <td>
-                            <button class="action-button">Actions</button>
-                            <div class="action-dropdown">
-                                <a href="#">View</a>
-                                <a href="#">Edit</a>
-                                <a href="#">Delete</a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Robert Lee</td>
-                        <td>11/05/2020</td>
-                        <td>Artist</td>
-                        <td>$800</td>
-                        <td>
-                            <button class="action-button">Actions</button>
-                            <div class="action-dropdown">
-                                <a href="#">View</a>
-                                <a href="#">Edit</a>
-                                <a href="#">Delete</a>
-                            </div>
-                        </td>
-                    </tr>
+
+                    <?php foreach ($users as $user): ?>
+                        <tr>
+                            <td>
+                                <?php echo htmlspecialchars($user['username']); ?>
+                            </td>
+                            <td>
+                                <?php echo htmlspecialchars($user['date_joined']); ?>
+                            </td>
+                            <td>
+                                <?php echo htmlspecialchars($user['role']); ?>
+                            </td>
+                            <td>$
+                                <?php echo htmlspecialchars(number_format($user['total_transaction_value'], 2)); ?>
+                            </td>
+                            <td><button class="action-button">Actions</button>
+                                <div class="action-dropdown">
+                                    <a href="#">View</a>
+                                    <a href="#">Edit</a>
+                                    <a href="#">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </section>

@@ -15,9 +15,6 @@ $message = ""; // To hold success or error messages
 if (isset($_SESSION['error'])) {
     $message = "<div class='error'>" . $_SESSION['error'] . "</div>";
     unset($_SESSION['error']); // Clear the message after displaying
-} elseif (isset($_SESSION['message'])) {
-    $message = "<div class='success'>" . $_SESSION['message'] . "</div>";
-    unset($_SESSION['message']); // Clear the message after displaying
 }
 ?>
 

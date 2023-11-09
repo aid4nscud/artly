@@ -4,18 +4,17 @@ require_once '../Dao.php';
 
 $dao = new Dao();
 
-
 $username = trim($_POST['username']);
 $password = trim($_POST['password']);
 
 // Use the authenticate method to check the credentials
 $user = $dao->authenticate($username, $password);
-print($user);
 // If authentication is successful, user will be an array; otherwise, it will be false
 if ($user) {
     // Store user data in session variables
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['role'] = $user['role'];
+
     // Redirect user to the appropriate dashboard based on their role
     switch ($_SESSION['role']) {
         case 'artist':

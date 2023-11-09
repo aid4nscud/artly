@@ -303,6 +303,120 @@ class Dao
         }
     }
 
+    public function getCurrentAuctions()
+    {
+        $conn = $this->getConnection();
+        try {
+            $stmt = $conn->prepare("
+                SELECT a.*, art.name, art.image_url 
+                FROM auction a 
+                JOIN art ON a.art_id = art.id 
+                WHERE a.status = 'active'
+            ");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('getCurrentAuctions failed: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getStatistics()
+    {
+        $conn = $this->getConnection();
+        try {
+            $users = $conn->query("SELECT COUNT(*) FROM user")->fetchColumn();
+            $artists = $conn->query("SELECT COUNT(*) FROM user WHERE role = 'artist'")->fetchColumn();
+            $collectors = $conn->query("SELECT COUNT(*) FROM user WHERE role = 'collector'")->fetchColumn();
+            $artPieces = $conn->query("SELECT COUNT(*) FROM art")->fetchColumn();
+
+            return [
+                'totalUsers' => $users,
+                'totalArtists' => $artists,
+                'totalCollectors' => $collectors,
+                'artPiecesListed' => $artPieces
+            ];
+        } catch (PDOException $e) {
+            error_log('getStatistics failed: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getRecentTransactions()
+    {
+        try {
+            $conn = $this->getConnection();
+            $query = "
+                SELECT 
+                    art.name AS art_name,
+                    auction.end_time AS transaction_date,
+                    buyer.username AS buyer_name,
+                    seller.username AS seller_name,
+                    transaction.final_price
+                FROM transaction
+                JOIN auction ON transaction.auction_id = auction.id
+                JOIN art ON auction.art_id = art.id
+                JOIN user AS buyer ON transaction.user_id = buyer.id
+                JOIN user AS seller ON art.user_id = seller.id
+                ORDER BY auction.end_time DESC
+                LIMIT 10;"; // Limit to the 10 most recent transactions
+
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            print($e);
+            return [];
+        }
+    }
+
+    public function getUsersWithTotalTransactionValue()
+    {
+        try {
+            $conn = $this->getConnection();
+            $query = "SELECT 
+                          u.id,
+                          u.username,
+                          u.date_joined,
+                          u.role,
+                          COALESCE(SUM(t.final_price), 0) AS total_transaction_value
+                      FROM 
+                          user u
+                      LEFT JOIN 
+                          transaction t ON u.id = t.user_id
+                      GROUP BY 
+                          u.id";
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            print($e);
+            return [];
+        }
+    }
+
+    public function getAuctions()
+    {
+        try {
+            $conn = $this->getConnection();
+            $query = "SELECT a.id, ar.name AS art_name, u.username AS artist_name, 
+                             a.end_time, COUNT(b.id) AS bid_count, ar.image_url
+                      FROM auction a
+                      JOIN art ar ON a.art_id = ar.id
+                      JOIN user u ON ar.user_id = u.id
+                      LEFT JOIN bid b ON a.id = b.auction_id
+                      WHERE a.status = 'active'
+                      GROUP BY a.id";
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            print($e);
+            return [];
+        }
+    }
+
+
 
 }
 

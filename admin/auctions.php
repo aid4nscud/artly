@@ -1,11 +1,28 @@
+<?php
+session_start();
+require_once '../Dao.php';
+
+// Check if the user is logged in, if not then redirect to login page
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header('Location: ../../auth/login.php');
+    exit;
+}
+
+$dao = new Dao();
+$auctions = $dao->getAuctions();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Admin Auctions</title>
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/admin-auctions.css">
 </head>
+
 <body>
 
     <header class="main-header">
@@ -24,82 +41,40 @@
     <main class="main-content">
         <h1 class="main-title">Current Auctions</h1>
 
-  
+
         <section class="auctions-grid">
 
-    <div class="auction-card">
-        <img src="../images/artist3.jpeg" alt="Artist" class="artist-profile">
-        <img src="../images/sample3.jpeg" alt="Art1" class="auction-image">
-        <div class="auction-details">
-            <h3>Art Piece 1</h3>
-            <p>5 bids</p>
-            <p>2 days left</p>
-        </div>
-        <button class="action-button">Actions</button>
-    </div>
-    <div class="auction-card">
-        <img src="../images/artist3.jpeg" alt="Artist" class="artist-profile">
-        <img src="../images/sample3.jpeg" alt="Art1" class="auction-image">
-        <div class="auction-details">
-            <h3>Art Piece 1</h3>
-            <p>5 bids</p>
-            <p>2 days left</p>
-        </div>
-        <button class="action-button">Actions</button>
-    </div>
-    <div class="auction-card">
-        <img src="../images/artist1.webp" alt="Artist" class="artist-profile">
-        <img src="../images/sample1.webp" alt="Art1" class="auction-image">
-        <div class="auction-details">
-            <h3>Art Piece 1</h3>
-            <p>5 bids</p>
-            <p>2 days left</p>
-        </div>
-        <button class="action-button">Actions</button>
-    </div>
-    <div class="auction-card">
-        <img src="../images/artist3.jpeg" alt="Artist" class="artist-profile">
-        <img src="../images/sample3.jpeg" alt="Art1" class="auction-image">
-        <div class="auction-details">
-            <h3>Art Piece 1</h3>
-            <p>5 bids</p>
-            <p>2 days left</p>
-        </div>
-        <button class="action-button">Actions</button>
-    </div>
-    <div class="auction-card">
-        <img src="../images/artist1.webp" alt="Artist" class="artist-profile">
-        <img src="../images/sample1.webp" alt="Art1" class="auction-image">
-        <div class="auction-details">
-            <h3>Art Piece 1</h3>
-            <p>5 bids</p>
-            <p>2 days left</p>
-        </div>
-        <button class="action-button">Actions</button>
-    </div>
-    <div class="auction-card">
-        <img src="../images/artist3.jpeg" alt="Artist" class="artist-profile">
-        <img src="../images/sample3.jpeg" alt="Art1" class="auction-image">
-        <div class="auction-details">
-            <h3>Art Piece 1</h3>
-            <p>5 bids</p>
-            <p>2 days left</p>
-        </div>
-        <button class="action-button">Actions</button>
-    </div>
-    <div class="auction-card">
-        <img src="../images/artist1.webp" alt="Artist" class="artist-profile">
-        <img src="../images/sample1.webp" alt="Art1" class="auction-image">
-        <div class="auction-details">
-            <h3>Art Piece 1</h3>
-            <p>5 bids</p>
-            <p>2 days left</p>
-        </div>
-        <button class="action-button">Actions</button>
-    </div>
+            <?php foreach ($auctions as $auction):
+                $endDateTime = new DateTime($auction['end_time']);
+                $now = new DateTime();
+                $interval = $now->diff($endDateTime);
+                $daysLeft = $interval->days;
+                if ($now > $endDateTime) {
+                    $daysLeft = 0; // Auction has ended
+                }
+                ?>
+                <div class="auction-card">
+                    <img src="<?php echo htmlspecialchars('https://thumbs.dreamstime.com/z/happy-man-okay-sign-portrait-white-background-showing-31418338.jpg'); ?>"
+                        alt="Artist" class="artist-profile">
+                    <img src="<?php echo htmlspecialchars($auction['image_url']); ?>"
+                        alt="<?php echo htmlspecialchars($auction['art_name']); ?>" class="auction-image">
+                    <div class="auction-details">
+                        <h3>
+                            <?php echo htmlspecialchars($auction['art_name']); ?>
+                        </h3>
+                        <p>
+                            <?php echo htmlspecialchars($auction['bid_count']); ?> bids
+                        </p>
+                        <p>
+                            <?php echo $daysLeft; ?> days left
+                        </p>
+                    </div>
+                    <button class="action-button">Actions</button>
+                </div>
+            <?php endforeach; ?>
 
-    
-</section>
+
+        </section>
 
     </main>
 
@@ -107,4 +82,5 @@
         <p>Copyright 2023, Aidan Scudder</p>
     </footer>
 </body>
+
 </html>
