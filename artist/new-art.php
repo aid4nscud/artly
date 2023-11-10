@@ -2,20 +2,14 @@
 session_start();
 require_once("../Dao.php");
 
-// Check if the user is logged in, if not then redirect to login page
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'artist') {
     header('Location: ../../auth/login.php');
     exit;
 }
 
 $dao = new Dao();
-$message = ""; // To hold success or error messages
-
-// Check if there's a message to display
-if (isset($_SESSION['error'])) {
-    $message = "<div class='error'>" . $_SESSION['error'] . "</div>";
-    unset($_SESSION['error']); // Clear the message after displaying
-}
+$message = isset($_SESSION['error']) ? "<div class='error'>" . $_SESSION['error'] . "</div>" : '';
+unset($_SESSION['error']);
 ?>
 
 <!DOCTYPE html>
@@ -44,8 +38,9 @@ if (isset($_SESSION['error'])) {
 
     <main class="main-content">
         <h1 class="main-title">Add New Art</h1>
-        <?php echo $message; ?>
+
         <section class="new-art-form">
+            <?php echo $message; ?>
             <form action="./submit_art_handler.php" method="POST" enctype="multipart/form-data">
                 <label for="name">Art Piece Name:</label>
                 <input type="text" id="name" name="name" required>

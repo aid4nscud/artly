@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,8 +19,12 @@
         </div>
         <nav class="main-nav">
             <ul class="nav-list">
-
-                <li class="nav-item"><a href="./auth/login.php">Login</a></li>
+                <li class="nav-item">
+                    <a
+                        href="<?php echo isset($_SESSION['user_id']) ? './auth/logout_handler.php' : './auth/login.php'; ?>">
+                        <?php echo isset($_SESSION['user_id']) ? 'Logout' : 'Login'; ?>
+                    </a>
+                </li>
             </ul>
         </nav>
     </header>

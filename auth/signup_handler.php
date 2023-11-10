@@ -2,10 +2,18 @@
 session_start();
 require_once '../Dao.php';
 
-$username = $_POST['username'];
-$email = $_POST['email'];
+$username = trim($_POST['username']);
+$email = trim($_POST['email']);
 $password = $_POST['password']; //password should be hashed
 $role = $_POST['role'];
+
+$emailRegex = '/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/';
+
+if (!preg_match($emailRegex, $email)) {
+    $_SESSION['error'] = 'Invalid email format.';
+    header('Location: ./signup.php');
+    exit;
+}
 
 $dao = new Dao();
 

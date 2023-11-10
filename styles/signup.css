@@ -1,6 +1,4 @@
 
-
-/* Styling for the signup container */
 .signup-container {
     background-color: #fff;
     padding: 2rem;
@@ -19,7 +17,7 @@ h1 {
     color: #333;
 }
 
-/* Style for form groups */
+
 .form-group {
     margin-bottom: 1rem;
 }
@@ -37,10 +35,10 @@ select {
     padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 4px;
-    box-sizing: border-box; /* Makes sure the padding doesn't affect the overall width */
+    box-sizing: border-box;
+   
 }
 
-/* Style for the submit button */
 .signup-button {
     background-color: #5c6bc0;
     color: #ffffff;
@@ -57,9 +55,13 @@ select {
     background-color: #3f51b5;
 }
 
-/* If you have an error message div, you might want to style it too */
 .error-message {
-    color: red;
-    margin-bottom: 1rem;
+    color: #d9534f;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
     text-align: center;
 }

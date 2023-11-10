@@ -42,7 +42,7 @@ $allArt = $dao->getAllArt();
         <section class="art-grid">
             <?php if ($allArt): ?>
                 <?php foreach ($allArt as $art): ?>
-                    <div class="card">
+                    <div class="art-card">
                         <img src="<?php echo htmlspecialchars($art['image_url']); ?>"
                             alt="<?php echo htmlspecialchars($art['name']); ?>" class="art-image">
                         <div class="art-details">

@@ -68,11 +68,13 @@ $users = $dao->getUsersWithTotalTransactionValue();
                             <td>$
                                 <?php echo htmlspecialchars(number_format($user['total_transaction_value'], 2)); ?>
                             </td>
-                            <td><button class="action-button">Actions</button>
+                            <td>
                                 <div class="action-dropdown">
-                                    <a href="#">View</a>
-                                    <a href="#">Edit</a>
-                                    <a href="#">Delete</a>
+                                    <button class="action-button">Actions</button>
+                                    <div class="action-dropdown-content">
+                                        <a href="./delete_user_handler.php?id=<?php echo $user['id']; ?>">Delete</a>
+
+                                    </div>
                                 </div>
                             </td>
                         </tr>

@@ -1,3 +1,15 @@
+<?php
+session_start();
+
+$message = ""; // To hold success or error messages
+
+// Check if there's a message to display
+if (isset($_SESSION['error'])) {
+    $message = "<div class='error-message'>" . $_SESSION['error'] . "</div>";
+    unset($_SESSION['error']); // Clear the message after displaying
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,6 +33,9 @@
 
         <div class="signup-container">
             <h1>Create Account</h1>
+
+            <?php echo $message; ?>
+
             <form action="signup_handler.php" method="post">
                 <div class="form-group">
                     <label for="username">Username:</label>

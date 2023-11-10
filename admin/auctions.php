@@ -69,7 +69,13 @@ $auctions = $dao->getAuctions();
                             <?php echo $daysLeft; ?> days left
                         </p>
                     </div>
-                    <button class="action-button">Actions</button>
+                    <div class="action-dropdown">
+                        <button class="action-button">Actions</button>
+                        <div class="action-dropdown-content">
+                            <a href="./delete_auction_handler.php?id=<?php echo $auction['id']; ?>">Delete</a>
+
+                        </div>
+                    </div>
                 </div>
             <?php endforeach; ?>
 

@@ -231,9 +231,9 @@ class Dao
             $conn->beginTransaction();
 
 
-            $artStmt = $conn->prepare("INSERT INTO art (user_id, name, dimensions, medium, image_url) VALUES (:userId, :name, :dimensions, :medium, :imageUrl)");
+            $artStmt = $conn->prepare("INSERT INTO art (user_id, name, dimensions, medium, image_url) VALUES (:user_id, :name, :dimensions, :medium, :imageUrl)");
             $artStmt->execute([
-                'userId' => $user_id,
+                'user_id' => $user_id,
                 'name' => $artName,
                 'dimensions' => $dimensions,
                 'medium' => $medium,
@@ -365,7 +365,7 @@ class Dao
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            print($e);
+            error_log($e);
             return [];
         }
     }
@@ -390,7 +390,7 @@ class Dao
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            print($e);
+            error_log($e->getMessage());
             return [];
         }
     }
@@ -400,7 +400,7 @@ class Dao
         try {
             $conn = $this->getConnection();
             $query = "SELECT a.id, ar.name AS art_name, u.username AS artist_name, 
-                             a.end_time, COUNT(b.id) AS bid_count, ar.image_url
+                             a.end_time, IFNULL(COUNT(b.id), 0) AS bid_count, ar.image_url
                       FROM auction a
                       JOIN art ar ON a.art_id = ar.id
                       JOIN user u ON ar.user_id = u.id
@@ -411,10 +411,84 @@ class Dao
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            print($e);
+            error_log($e);
             return [];
         }
     }
+
+
+    public function deleteAuction($auction_id)
+    {
+        try {
+            $conn = $this->getConnection();
+            $conn->beginTransaction();
+
+            // Delete related records in the bid table
+            $stmt = $conn->prepare("DELETE FROM bid WHERE auction_id = :auction_id");
+            $stmt->bindParam(':auction_id', $auction_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Update the art record linked to this auction
+            $stmt = $conn->prepare("UPDATE art SET auction_id = NULL WHERE auction_id = :auction_id");
+            $stmt->bindParam(':auction_id', $auction_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Delete the auction
+            $stmt = $conn->prepare("DELETE FROM auction WHERE id = :auction_id");
+            $stmt->bindParam(':auction_id', $auction_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $conn->commit();
+            return true;
+
+        } catch (Exception $e) {
+            $conn->rollBack();
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+
+    public function deleteUser($user_id)
+    {
+        try {
+            $conn = $this->getConnection();
+            $conn->beginTransaction();
+
+            // Delete bids and transactions linked to the user's auctions
+            $stmt = $conn->prepare("DELETE b, t FROM bid b 
+                                    LEFT JOIN transaction t ON t.auction_id = b.auction_id 
+                                    JOIN auction a ON b.auction_id = a.id 
+                                    JOIN art ar ON a.art_id = ar.id 
+                                    WHERE ar.user_id = :user_id");
+            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Delete auctions linked to the user's art
+            $stmt = $conn->prepare("DELETE a FROM auction a 
+                                    JOIN art ar ON a.art_id = ar.id 
+                                    WHERE ar.user_id = :user_id");
+            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Delete art created by the user
+            $stmt = $conn->prepare("DELETE FROM art WHERE user_id = :user_id");
+            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Delete the user
+            $stmt = $conn->prepare("DELETE FROM user WHERE id = :user_id");
+            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $conn->rollBack();
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+
 
 
 
