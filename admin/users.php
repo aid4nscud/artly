@@ -7,6 +7,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header('Location: ../../auth/login.php');
     exit;
 }
+$message = isset($_SESSION['error']) ? "<div class='error-message'>" . $_SESSION['error'] . "</div>" : '';
+unset($_SESSION['error']);
+$message = isset($_SESSION['success']) ? "<div class='success'>" . $_SESSION['success'] . "</div>" : '';
+unset($_SESSION['success']);
 
 $dao = new Dao();
 $users = $dao->getUsersWithTotalTransactionValue();
@@ -19,9 +23,10 @@ $users = $dao->getUsersWithTotalTransactionValue();
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin Users</title>
+    <title>Manage Users - Artly</title>
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/admin-users.css">
+    <link rel="icon" href="../favicon-32x32.png" type="image/x-icon">
 </head>
 
 <body>
@@ -40,7 +45,8 @@ $users = $dao->getUsersWithTotalTransactionValue();
     </header>
 
     <main class="main-content">
-        <h1 class="main-title">Users</h1>
+        <h1 class="main-title">Manage Users</h1>
+        <?php echo $message; ?>
         <section class="users">
             <table>
                 <thead>

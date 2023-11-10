@@ -20,9 +20,10 @@ $recentTransactions = $dao->getRecentTransactions();
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
+    <title>Admin Dashboard - Artly</title>
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/admin-dashboard.css">
+    <link rel="icon" href="../favicon-32x32.png" type="image/x-icon">
 </head>
 
 <body>

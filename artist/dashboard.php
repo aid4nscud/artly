@@ -18,9 +18,10 @@ $auctionHistory = $dao->getArtistAuctionHistory($_SESSION['user_id']);
 
 <head>
     <meta charset="UTF-8">
-    <title>Artist Dashboard</title>
+    <title>Artist Dashboard - Artly</title>
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/artist-dashboard.css">
+    <link rel="icon" href="../favicon-32x32.png" type="image/x-icon">
 </head>
 
 <body>

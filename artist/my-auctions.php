@@ -17,9 +17,10 @@ $auctions = $dao->getArtistAuctions($_SESSION['user_id']);
 
 <head>
     <meta charset="UTF-8">
-    <title>My Auctions</title>
+    <title>My Auctions - Artly</title>
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/my-auctions.css">
+    <link rel="icon" href="../favicon-32x32.png" type="image/x-icon">
 </head>
 
 <body>
@@ -53,27 +54,31 @@ $auctions = $dao->getArtistAuctions($_SESSION['user_id']);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($auctions['ongoing'] as $auction): ?>
-                        <tr>
-                            <td>
-                                <?php echo htmlspecialchars($auction['name']); ?>
-                            </td>
-                            <td>
-                                <?php echo htmlspecialchars($auction['end_time']); ?>
-                            </td>
-                            <td>$
-                                <?php echo htmlspecialchars(number_format($auction['start_price'], 2)); ?>
-                            </td>
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                1
-                            </td>
-                            <td><img src="<?php echo htmlspecialchars($auction['image_url']); ?>"
-                                    alt="<?php echo htmlspecialchars($auction['name']); ?>" class="table-img"></td>
-                        </tr>
-                    <?php endforeach; ?>
+                    <?php if ($auctions): ?>
+                        <?php foreach ($auctions['ongoing'] as $auction): ?>
+                            <tr>
+                                <td>
+                                    <?php echo htmlspecialchars($auction['name']); ?>
+                                </td>
+                                <td>
+                                    <?php echo htmlspecialchars($auction['end_time']); ?>
+                                </td>
+                                <td>$
+                                    <?php echo htmlspecialchars(number_format($auction['start_price'], 2)); ?>
+                                </td>
+                                <td>
+                                    1
+                                </td>
+                                <td>
+                                    1
+                                </td>
+                                <td><img src="<?php echo htmlspecialchars($auction['image_url']); ?>"
+                                        alt="<?php echo htmlspecialchars($auction['name']); ?>" class="table-img"></td>
+                            </tr>
+                        <?php endforeach; ?>
+
+                    <?php endif; ?>
+
 
                 </tbody>
             </table>
@@ -94,24 +99,26 @@ $auctions = $dao->getArtistAuctions($_SESSION['user_id']);
                     </tr>
                 </thead>
                 <tbody>
+                    <?php if ($auctions): ?>
+                        <?php foreach ($auctions['past'] as $auction): ?>
+                            <tr>
+                                <td>
+                                    <?php echo htmlspecialchars($auction['name']); ?>
+                                </td>
+                                <td>
+                                    <?php echo htmlspecialchars($auction['end_time']); ?>
+                                </td>
+                                <td>$
+                                    <?php echo htmlspecialchars(number_format($auction['start_price'], 2)); ?>
+                                </td>
+                                <td>2</td>
+                                <td>2</td>
+                                <td><img src="<?php echo htmlspecialchars($auction['image_url']); ?>"
+                                        alt="<?php echo htmlspecialchars($auction['name']); ?>" class="table-img"></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
 
-                    <?php foreach ($auctions['past'] as $auction): ?>
-                        <tr>
-                            <td>
-                                <?php echo htmlspecialchars($auction['name']); ?>
-                            </td>
-                            <td>
-                                <?php echo htmlspecialchars($auction['end_time']); ?>
-                            </td>
-                            <td>$
-                                <?php echo htmlspecialchars(number_format($auction['start_price'], 2)); ?>
-                            </td>
-                            <td>2</td>
-                            <td>2</td>
-                            <td><img src="<?php echo htmlspecialchars($auction['image_url']); ?>"
-                                    alt="<?php echo htmlspecialchars($auction['name']); ?>" class="table-img"></td>
-                        </tr>
-                    <?php endforeach; ?>
                 </tbody>
             </table>
         </section>

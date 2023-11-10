@@ -7,7 +7,7 @@ session_start();
 
 <head>
     <meta charset="UTF-8">
-    <title>Artly - Home</title>
+    <title>Home - Artly</title>
     <link rel="stylesheet" href="styles/index.css">
     <link rel="icon" href="favicon-32x32.png" type="image/x-icon">
 </head>

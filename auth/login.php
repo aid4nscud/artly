@@ -18,6 +18,7 @@ if (isset($_SESSION['error'])) {
     <title>Login - Artly</title>
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/login.css">
+    <link rel="icon" href="../favicon-32x32.png" type="image/x-icon">
 </head>
 
 <body>

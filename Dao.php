@@ -91,11 +91,10 @@ class Dao
           art.image_url
         FROM
           art
-        INNER JOIN auction ON art.id = auction.art_id
+        INNER JOIN transaction ON art.auction_id = transaction.auction_id
         WHERE
-          auction.winner_id = :user_id AND
-          auction.status = 'sold'
-      ");
+          transaction.buyer_id = :user_id
+    ");
 
             // Execute the query with the user_id parameter
             $stmt->execute(['user_id' => $user_id]);
@@ -230,7 +229,7 @@ class Dao
             // Begin transaction
             $conn->beginTransaction();
 
-
+            // First, insert the art record
             $artStmt = $conn->prepare("INSERT INTO art (user_id, name, dimensions, medium, image_url) VALUES (:user_id, :name, :dimensions, :medium, :imageUrl)");
             $artStmt->execute([
                 'user_id' => $user_id,
@@ -238,8 +237,9 @@ class Dao
                 'dimensions' => $dimensions,
                 'medium' => $medium,
                 'imageUrl' => $imageUrl,
-
             ]);
+
+            // Get the ID of the newly inserted art record
             $artId = $conn->lastInsertId();
 
             // Insert into auction table
@@ -262,36 +262,35 @@ class Dao
         }
     }
 
+
     public function getArtistAuctions($user_id)
     {
         $conn = $this->getConnection();
         try {
             $currentTime = date('Y-m-d H:i:s');
-
+    
             // Retrieve ongoing auctions
             $ongoingStmt = $conn->prepare("
-                SELECT a.*, auc.*, u.username as winner_username
+                SELECT a.*, auc.*
                 FROM art a
                 JOIN auction auc ON a.id = auc.art_id
-                LEFT JOIN user u ON auc.winner_id = u.id
                 WHERE a.user_id = :user_id AND auc.end_time > :current_time
                 ORDER BY auc.end_time ASC
             ");
             $ongoingStmt->execute(['user_id' => $user_id, 'current_time' => $currentTime]);
             $ongoingAuctions = $ongoingStmt->fetchAll(PDO::FETCH_ASSOC);
-
+    
             // Retrieve past auctions
             $pastStmt = $conn->prepare("
-                SELECT a.*, auc.*, u.username as winner_username
+                SELECT a.*, auc.*
                 FROM art a
                 JOIN auction auc ON a.id = auc.art_id
-                LEFT JOIN user u ON auc.winner_id = u.id
                 WHERE a.user_id = :user_id AND auc.end_time <= :current_time
                 ORDER BY auc.end_time DESC
             ");
             $pastStmt->execute(['user_id' => $user_id, 'current_time' => $currentTime]);
             $pastAuctions = $pastStmt->fetchAll(PDO::FETCH_ASSOC);
-
+    
             // Return both lists in an associative array
             return [
                 'ongoing' => $ongoingAuctions,
@@ -302,6 +301,7 @@ class Dao
             return false;
         }
     }
+    
 
     public function getCurrentAuctions()
     {
@@ -369,7 +369,6 @@ class Dao
             return [];
         }
     }
-
     public function getUsersWithTotalTransactionValue()
     {
         try {
@@ -379,11 +378,11 @@ class Dao
                           u.username,
                           u.date_joined,
                           u.role,
-                          COALESCE(SUM(t.final_price), 0) AS total_transaction_value
+                          COALESCE(SUM(t.amount), 0) AS total_transaction_value
                       FROM 
                           user u
                       LEFT JOIN 
-                          transaction t ON u.id = t.user_id
+                          transaction t ON u.id = t.buyer_id
                       GROUP BY 
                           u.id";
             $stmt = $conn->prepare($query);
@@ -394,6 +393,7 @@ class Dao
             return [];
         }
     }
+
 
     public function getAuctions()
     {
@@ -485,6 +485,34 @@ class Dao
         } catch (Exception $e) {
             $conn->rollBack();
             error_log($e->getMessage());
+            return false;
+        }
+    }
+
+    public function deleteArt($art_id)
+    {
+        $conn = $this->getConnection();
+        try {
+            // Start the transaction
+            $conn->beginTransaction();
+
+            // Delete auctions linked to the art piece
+            $stmt = $conn->prepare("DELETE FROM auction WHERE art_id = :art_id");
+            $stmt->bindParam(':art_id', $art_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Delete the art piece
+            $stmt = $conn->prepare("DELETE FROM art WHERE id = :art_id");
+            $stmt->bindParam(':art_id', $art_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Commit the transaction
+            $conn->commit();
+            return true;
+        } catch (Exception $e) {
+            // Roll back the transaction in case of an error
+            $conn->rollBack();
+            error_log("Error in deleteArt: " . $e->getMessage());
             return false;
         }
     }

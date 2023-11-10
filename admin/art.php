@@ -7,6 +7,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header('Location: ../../auth/login.php');
     exit;
 }
+$message = isset($_SESSION['error']) ? "<div class='error-message'>" . $_SESSION['error'] . "</div>" : '';
+unset($_SESSION['error']);
+$message = isset($_SESSION['success']) ? "<div class='success'>" . $_SESSION['success'] . "</div>" : '';
+unset($_SESSION['success']);
 
 $dao = new Dao();
 $allArt = $dao->getAllArt();
@@ -18,9 +22,10 @@ $allArt = $dao->getAllArt();
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin Manage Art</title>
+    <title>Manage Art - Artly</title>
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/admin-art.css">
+    <link rel="icon" href="../favicon-32x32.png" type="image/x-icon">
 </head>
 
 <body>
@@ -40,9 +45,7 @@ $allArt = $dao->getAllArt();
 
     <main class="main-content">
         <h1 class="main-title">Manage Art</h1>
-
-        <button class="sort-button">Sort By</button>
-
+        <?php echo $message; ?>
         <section class="art-grid">
             <?php if ($allArt): ?>
                 <?php foreach ($allArt as $art): ?>
@@ -57,7 +60,13 @@ $allArt = $dao->getAllArt();
                                 <?php echo htmlspecialchars($art['medium']); ?>
                             </p>
                         </div>
-                        <div class="action-button">Actions</div>
+                        <div class="action-dropdown">
+                            <button class="action-button">Actions</button>
+                            <div class="action-dropdown-content">
+                                <a href="./delete_art_handler.php?id=<?php echo $art['id']; ?>">Delete</a>
+
+                            </div>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>

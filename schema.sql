@@ -14,7 +14,8 @@ CREATE TABLE art (
     dimensions TEXT,
     medium TEXT,
     image_url VARCHAR(256),
-    FOREIGN KEY (user_id) REFERENCES user(id) 
+    auction_id INT DEFAULT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
 CREATE TABLE auction (
@@ -23,11 +24,12 @@ CREATE TABLE auction (
     start_price DECIMAL(10, 2) NOT NULL,
     bid_increment DECIMAL(10, 2) NOT NULL,
     end_time DATETIME NOT NULL,
-    winner_id INT,
     status ENUM('active', 'ended', 'sold') DEFAULT 'active',
-    FOREIGN KEY (art_id) REFERENCES art(id),
-    FOREIGN KEY (winner_id) REFERENCES user(id) 
+    FOREIGN KEY (art_id) REFERENCES art(id) ON DELETE CASCADE
 );
+
+ALTER TABLE art
+    ADD FOREIGN KEY (auction_id) REFERENCES auction(id) ON DELETE SET NULL;
 
 CREATE TABLE bid (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -42,8 +44,11 @@ CREATE TABLE bid (
 CREATE TABLE transaction (
     id INT AUTO_INCREMENT PRIMARY KEY,
     auction_id INT,
-    user_id INT,
+    buyer_id INT,
+    amount DECIMAL(10, 2) NOT NULL,
     payment_details TEXT,
+    transaction_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('pending', 'completed', 'failed') DEFAULT 'pending',
     FOREIGN KEY (auction_id) REFERENCES auction(id),
-    FOREIGN KEY (user_id) REFERENCES user(id) 
+    FOREIGN KEY (buyer_id) REFERENCES user(id)
 );

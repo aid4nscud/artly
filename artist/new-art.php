@@ -17,9 +17,10 @@ unset($_SESSION['error']);
 
 <head>
     <meta charset="UTF-8">
-    <title>New Art</title>
+    <title>New Art - Artly</title>
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/new-art.css">
+    <link rel="icon" href="../favicon-32x32.png" type="image/x-icon">
 </head>
 
 <body>

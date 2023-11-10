@@ -19,9 +19,10 @@ $artists = $dao->getCollectorArtists($_SESSION['user_id']);
 
 <head>
     <meta charset="UTF-8">
-    <title>Collector Dashboard</title>
+    <title>Collector Dashboard - Artly</title>
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/collector-dashboard.css">
+    <link rel="icon" href="../favicon-32x32.png" type="image/x-icon">
 </head>
 
 <body>

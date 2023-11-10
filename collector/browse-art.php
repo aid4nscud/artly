@@ -17,9 +17,10 @@ $allArt = $dao->getAllArt();
 
 <head>
     <meta charset="UTF-8">
-    <title>Browse Art</title>
+    <title>Browse Art - Artly</title>
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/browse-art.css">
+    <link rel="icon" href="../favicon-32x32.png" type="image/x-icon">
 </head>
 
 <body>

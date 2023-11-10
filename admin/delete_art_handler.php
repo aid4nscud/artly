@@ -11,25 +11,25 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 
 $dao = new Dao();
 
-$userId = isset($_GET['id']) ? $_GET['id'] : null;
+$artId = isset($_GET['id']) ? $_GET['id'] : null;
 
-if ($userId) {
-    // Delete the user
-    $success = $dao->deleteUser($userId);
+if ($artId) {
+    // Delete the art piece
+    $success = $dao->deleteArt($artId);
     if (!$success) {
-        $_SESSION['error'] = 'Unable to delete this user right now';
-        header('Location: ./users.php');
+        $_SESSION['error'] = 'Unable to delete this art piece at the moment';
+        header('Location: ./auctions.php');
     } else {
         // Redirect to the admin auctions page with a success message
-        $_SESSION['success'] = 'User deleted successfully.';
-        header('Location: ./users.php');
+        $_SESSION['success'] = 'Art piece deleted successfully.';
+        header('Location: ./auctions.php');
     }
 
 
 } else {
     // Redirect to the admin auctions page with an error message
-    $_SESSION['error'] = 'Invalid user ID.';
-    header('Location: ./users.php');
+    $_SESSION['error'] = 'Invalid auction ID.';
+    header('Location: ./auctions.php');
 }
 
 ?>

@@ -17,9 +17,10 @@ $bids = $dao->getCollectorBids($_SESSION['user_id']);
 
 <head>
     <meta charset="UTF-8">
-    <title>My Bids</title>
+    <title>My Bids - Artly</title>
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/my-bids.css">
+    <link rel="icon" href="../favicon-32x32.png" type="image/x-icon">
 </head>
 
 <body>
