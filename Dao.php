@@ -1,11 +1,10 @@
 <?php
 class Dao
 {
-
-    private $host = "localhost";
-    private $db = "artly";
-    private $user = "root";
-    private $pass = "aidanscudder";
+    private $host = "us-cluster-east-01.k8s.cleardb.net";
+    private $db = "heroku_a9563eb0bc0dd27";
+    private $user = "b4f8b0aa5172c7";
+    private $pass = "59abec45";
 
 
     public function getConnection()
@@ -268,7 +267,7 @@ class Dao
         $conn = $this->getConnection();
         try {
             $currentTime = date('Y-m-d H:i:s');
-    
+
             // Retrieve ongoing auctions
             $ongoingStmt = $conn->prepare("
                 SELECT a.*, auc.*
@@ -279,7 +278,7 @@ class Dao
             ");
             $ongoingStmt->execute(['user_id' => $user_id, 'current_time' => $currentTime]);
             $ongoingAuctions = $ongoingStmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
             // Retrieve past auctions
             $pastStmt = $conn->prepare("
                 SELECT a.*, auc.*
@@ -290,7 +289,7 @@ class Dao
             ");
             $pastStmt->execute(['user_id' => $user_id, 'current_time' => $currentTime]);
             $pastAuctions = $pastStmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
             // Return both lists in an associative array
             return [
                 'ongoing' => $ongoingAuctions,
@@ -301,7 +300,7 @@ class Dao
             return false;
         }
     }
-    
+
 
     public function getCurrentAuctions()
     {
