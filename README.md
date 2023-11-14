@@ -1,3 +1,3 @@
 ADMIN LOGIN:
-username: `Admin`
+username: `admin`
 password: `admin`
