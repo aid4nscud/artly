@@ -27,6 +27,13 @@ $users = $dao->getUsersWithTotalTransactionValue();
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/admin-users.css">
     <link rel="icon" href="../favicon-32x32.png" type="image/x-icon">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Fade out the error and success messages after 3 seconds
+            $('.error-message, .success').delay(3000).fadeOut('slow');
+        });
+    </script>
 </head>
 
 <body>

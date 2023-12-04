@@ -44,3 +44,4 @@ try {
     $_SESSION['error'] = "Error: " . $e->getMessage();
     header('Location: ./signup.php');
 }
+?>

@@ -15,9 +15,6 @@ if (empty($username) || empty($password)) {
     exit;
 }
 
-
-
-
 // Check the credentials
 $user = $dao->authenticate($username, $password);
 

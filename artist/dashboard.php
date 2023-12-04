@@ -22,6 +22,8 @@ $auctionHistory = $dao->getArtistAuctionHistory($_SESSION['user_id']);
     <link rel="stylesheet" href="../styles/index.css">
     <link rel="stylesheet" href="../styles/artist-dashboard.css">
     <link rel="icon" href="../favicon-32x32.png" type="image/x-icon">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -102,8 +104,33 @@ $auctionHistory = $dao->getArtistAuctionHistory($_SESSION['user_id']);
 
         <section class="earnings-graph">
             <h2>Earnings</h2>
-            <div id="lineGraph">Line Graph Placeholder (Needs JS and JQuery)</div>
+            <canvas id="earningsLineGraph"></canvas>
         </section>
+        <script>
+            $(document).ready(function () {
+                var ctx = $('#earningsLineGraph');
+                var earningsLineGraph = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                        datasets: [{
+                            label: 'Earnings',
+                            data: [0, 100, 200, 300, 200, 300, 400], // Example data
+                            backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                            borderColor: 'rgba(0, 123, 255, 1)',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
 
     </main>
 
