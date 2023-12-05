@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
 body,
 h1,
 ul,
@@ -8,9 +9,10 @@ p {
 }
 
 
+
 body {
     background-color: #f4f4f4;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Playfair Display', serif;
 
 }
 

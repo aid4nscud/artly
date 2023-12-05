@@ -30,6 +30,9 @@ try {
             case 'collector':
                 header('Location: ../collector/dashboard.php');
                 break;
+            case 'admin':
+                header('Location: ../admin/dashboard.php');
+                break;
             default:
                 // If the role is not recognized, send back to the login page with an error
                 $_SESSION['error'] = 'Unauthorized access.';

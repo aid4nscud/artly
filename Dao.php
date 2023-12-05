@@ -18,31 +18,27 @@ class Dao
     }
 
     public function authenticate($username, $password)
-    {
-        $conn = $this->getConnection();
-        try {
-            // Prepare a select statement
-            $stmt = $conn->prepare("SELECT * FROM user WHERE username = :username");
-            // Execute the statement with the username parameter
-            $stmt->execute(['username' => $username]);
-            // Fetch the user from the database
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            // Check if a user was found and the passwords match
-            if ($user && $password == $user['password']) {
-                return $user;
-            }
-            // Return false if authentication fails
-            return false;
-        } catch (PDOException $e) {
-            // Handle errors by throwing an exception or returning false
-            error_log('Authentication failed: ' . $e->getMessage());
-            return false;
+{
+    $conn = $this->getConnection();
+    try {
+        $stmt = $conn->prepare("SELECT * FROM user WHERE username = :username");
+        $stmt->execute(['username' => $username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && password_verify($password, $user['password'])) {
+            return $user; // Return the user if password verification is successful
         }
+        return false; // Authentication failed
+    } catch (PDOException $e) {
+        error_log('Authentication failed: ' . $e->getMessage());
+        return false;
     }
+}
 
     public function signup($username, $email, $password, $role)
     {
         $conn = $this->getConnection();
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT); // Hash the password
 
         try {
             // Prepare the SQL statement to insert a new user
@@ -52,7 +48,7 @@ class Dao
             // Bind the parameters to the prepared statement
             $stmt->bindParam(':username', $username);
             $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':password', $password);
+            $stmt->bindParam(':password', $hashedPassword);
             $stmt->bindParam(':role', $role);
             // Execute the statement
             $stmt->execute();
